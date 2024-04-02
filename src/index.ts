@@ -72,7 +72,7 @@ class LimitkaJupiter {
 			throw new Error(data.error as any);
 		}
 
-		return Transaction.from(Buffer.from(data.tx, "base64"));
+		return [base, Transaction.from(Buffer.from(data.tx, "base64"))];
 	}
 }
 
@@ -169,7 +169,7 @@ async function main() {
 			) as unknown as [number, number]),
 		);
 
-		const tx = await jupSwap.createOrder({
+		const [base, tx] = await jupSwap.createOrder({
 			inputMint,
 			outputMint,
 			inAmount,
@@ -178,9 +178,11 @@ async function main() {
 
 		spinner.text = await sendTransaction(
 			connection,
-			tx,
+			tx as Transaction,
 			feePayer ? feePayer.publicKey : account.publicKey,
-			feePayer ? [feePayer, account] : [account],
+			feePayer
+				? [feePayer, account, base as Keypair]
+				: [account, base as Keypair],
 		);
 
 		await setTimeout(5000);
