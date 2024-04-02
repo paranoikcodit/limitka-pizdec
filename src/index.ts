@@ -147,13 +147,6 @@ async function main() {
 	spinner.text = `Загружено ${accounts.length} аккаунтов`;
 	await setTimeout(5000);
 
-	// new LimitkaJupiter(connection, Keypair.generate()).createOrder({
-	// 	inputMint: new PublicKey("So11111111111111111111111111111111111111112"),
-	// 	outputMint: new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"),
-	// 	inAmount: 1000000,
-	// 	outAmount: 1000000,
-	// });
-
 	for (const account of accounts) {
 		spinner.text = `ПРОЦЕССИНГ ${account.publicKey.toString()}`;
 		const jupSwap = new LimitkaJupiter(connection, account);
